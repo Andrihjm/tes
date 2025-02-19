@@ -19,6 +19,19 @@ export const getBlog = async (): Promise<BlogType[]> => {
   }
 };
 
+export const getBlogById = async (id: string): Promise<BlogType> => {
+  const { data } = await axios.get<BlogType>(
+    `${process.env.NEXT_PUBLIC_API_URL}/${id}`,
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  return data;
+};
+
 export const createBlog = async (data: BlogType): Promise<BlogType> => {
   try {
     const response = await axios.post<BlogType>(
@@ -36,4 +49,21 @@ export const createBlog = async (data: BlogType): Promise<BlogType> => {
     console.error("Failed to create blog post", error);
     throw error;
   }
+};
+
+export const updateBlog = async (
+  id: string | number,
+  data: BlogType
+): Promise<BlogType> => {
+  const response = await axios.put<BlogType>(
+    `${process.env.NEXT_PUBLIC_API_URL}/${id}`,
+    data,
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  return response.data;
 };

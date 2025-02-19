@@ -3,6 +3,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteBlog } from "@/api/gorest";
 import { toast } from "sonner";
+import { GoTrash } from "react-icons/go";
+import Spinner from "@/components/ui/spinner";
 
 interface DeleteBlogButtonProps {
   blogId: string | number;
@@ -29,12 +31,12 @@ const DeleteBlogButton = ({ blogId }: DeleteBlogButtonProps) => {
   };
 
   return (
-    <button
-      onClick={handleDelete}
-      disabled={mutation.isPending}
-      className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 disabled:bg-red-300 transition"
-    >
-      {mutation.isPending ? "Deleting..." : "Delete Blog"}
+    <button onClick={handleDelete} disabled={mutation.isPending}>
+      {mutation.isPending ? (
+        <Spinner color="#4A5565" className="h-4 w-4" />
+      ) : (
+        <GoTrash />
+      )}
     </button>
   );
 };

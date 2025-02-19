@@ -3,11 +3,15 @@
 import { getBlog } from "@/api/gorest";
 import { useQuery } from "@tanstack/react-query";
 import { BlogType } from "@/types/blog.type";
-import { BsThreeDotsVertical } from "react-icons/bs";
+
 import Link from "next/link";
 import DeleteBlogButton from "./delete-blog-button";
 import { useState } from "react";
 import Pagination from "@/components/globals/pagination";
+import { Button } from "antd";
+import Spinner from "@/components/ui/spinner";
+import LoadingPage from "@/components/globals/loading-page";
+import UserOption from "./user-option";
 
 export default function BlogPage() {
   const [page, setPage] = useState<number>(1);
@@ -25,32 +29,30 @@ export default function BlogPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div>
-        <Link
-          href="/blog-app/create-blog"
-          className="text-xl font-semibold mb-4 p-4 border max-w-max"
-        >
-          Create blog
-        </Link>
-
         {isLoading ? (
-          <div className="text-center">Loading...</div>
+          <LoadingPage />
         ) : error ? (
           <div className="text-red-500">Error loading blogs</div>
         ) : (
           <>
+            <Link
+              href="/blog-app/create-blog"
+              className="flex w-full items-center justify-end"
+            >
+              <Button type="default" className="py-4">
+                Create Blog
+              </Button>
+            </Link>
+
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
               {blogsData?.data.map((blog: BlogType) => (
-                <div key={blog.id} className="group p-4 border rounded shadow">
-                  <div className="hidden group-hover:flex justify-between">
-                    <Link
-                      href={`/blog-app/update-blog/${blog.id}`}
-                      className="cursor-pointer"
-                    >
-                      <BsThreeDotsVertical />
-                    </Link>
-                    <DeleteBlogButton blogId={blog.id} />
-                  </div>
-                  <h3 className="font-semibold mb-2">{blog.title}</h3>
+                <div
+                  key={blog.id}
+                  className="group relative rounded border p-4 shadow"
+                >
+                  <UserOption id={blog.id} className="absolute right-1 top-2" />
+
+                  <h3 className="mb-2 font-semibold">{blog.title}</h3>
                   <p className="text-gray-600">
                     {blog.body.substring(0, 100)}...
                   </p>

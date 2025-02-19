@@ -1,4 +1,4 @@
-import GetBlog from "./components/get-blog";
+import GetBlog from "./components/get-all-blog";
 
 const page = () => {
   return (

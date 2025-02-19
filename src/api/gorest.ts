@@ -55,15 +55,34 @@ export const updateBlog = async (
   id: string | number,
   data: BlogType
 ): Promise<BlogType> => {
-  const response = await axios.put<BlogType>(
-    `${process.env.NEXT_PUBLIC_API_URL}/${id}`,
-    data,
-    {
+  try {
+    const response = await axios.put<BlogType>(
+      `${process.env.NEXT_PUBLIC_API_URL}/${id}`,
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Failed to update blog post", error);
+    throw error;
+  }
+};
+
+export const deleteBlog = async (id: string | number): Promise<void> => {
+  try {
+    await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${id}`, {
       headers: {
         Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
         "Content-Type": "application/json",
       },
-    }
-  );
-  return response.data;
+    });
+  } catch (error) {
+    console.error("Failed to delete blog post", error);
+    throw error;
+  }
 };

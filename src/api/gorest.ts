@@ -1,18 +1,37 @@
-import { BlogType } from "@/types/blog.type";
+import { BlogPaginationResponseType, BlogType } from "@/types/blog.type";
 import axios from "axios";
 
-export const getBlog = async (): Promise<BlogType[]> => {
+export const getBlog = async (
+  page: number = 1,
+  perPage: number = 10
+): Promise<BlogPaginationResponseType> => {
   try {
-    const { data } = await axios.get<BlogType[]>(
+    const { data, headers } = await axios.get<BlogType[]>(
       process.env.NEXT_PUBLIC_API_URL!,
       {
+        params: {
+          page,
+          per_page: perPage,
+        },
         headers: {
           Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
           "Content-Type": "application/json",
         },
       }
     );
-    return data;
+
+    const totalItems = parseInt(headers["x-pagination-total"] ?? "0");
+    const totalPages = Math.ceil(totalItems / perPage);
+
+    return {
+      data,
+      pagination: {
+        currentPage: page,
+        totalPages,
+        totalItems,
+        perPage,
+      },
+    };
   } catch (error) {
     console.error("Failed to fetch blog posts", error);
     throw error;

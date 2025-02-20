@@ -3,7 +3,7 @@ import axios from "axios";
 
 export const getBlog = async (
   page: number = 1,
-  perPage: number = 10
+  perPage: number = 10,
 ): Promise<BlogPaginationResponseType> => {
   try {
     const { data, headers } = await axios.get<BlogType[]>(
@@ -17,7 +17,7 @@ export const getBlog = async (
           Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
           "Content-Type": "application/json",
         },
-      }
+      },
     );
 
     const totalItems = parseInt(headers["x-pagination-total"] ?? "0");
@@ -46,7 +46,7 @@ export const getBlogById = async (id: string): Promise<BlogType> => {
         Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
         "Content-Type": "application/json",
       },
-    }
+    },
   );
   return data;
 };
@@ -61,7 +61,7 @@ export const createBlog = async (data: BlogType): Promise<BlogType> => {
           Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
           "Content-Type": "application/json",
         },
-      }
+      },
     );
     return response.data;
   } catch (error) {
@@ -72,7 +72,7 @@ export const createBlog = async (data: BlogType): Promise<BlogType> => {
 
 export const updateBlog = async (
   id: string | number,
-  data: BlogType
+  data: BlogType,
 ): Promise<BlogType> => {
   try {
     const response = await axios.put<BlogType>(
@@ -83,7 +83,7 @@ export const updateBlog = async (
           Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
           "Content-Type": "application/json",
         },
-      }
+      },
     );
     return response.data;
   } catch (error) {

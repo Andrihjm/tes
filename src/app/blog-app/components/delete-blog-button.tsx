@@ -33,7 +33,7 @@ const DeleteBlogButton = ({ blogId }: DeleteBlogButtonProps) => {
   return (
     <button onClick={handleDelete} disabled={mutation.isPending}>
       {mutation.isPending ? (
-        <Spinner color="#4A5565" className="h-4 w-4" />
+        <Spinner color="#4A5565" className="!h-4 !w-4" />
       ) : (
         <GoTrash />
       )}

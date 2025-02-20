@@ -47,7 +47,7 @@ export default function BlogPage() {
                 <Space
                   key={blog.id}
                   direction="vertical"
-                  className="transform cursor-pointer transition-all duration-200 hover:-translate-y-1"
+                  className="itransition-all transform cursor-pointer duration-200 hover:-translate-y-1"
                 >
                   <Card
                     title={blog.title}

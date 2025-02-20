@@ -3,15 +3,13 @@
 import { getBlog } from "@/api/gorest";
 import { useQuery } from "@tanstack/react-query";
 import { BlogType } from "@/types/blog.type";
-
 import Link from "next/link";
-import DeleteBlogButton from "./delete-blog-button";
 import { useState } from "react";
 import Pagination from "@/components/globals/pagination";
-import { Button } from "antd";
-import Spinner from "@/components/ui/spinner";
+import { Button, Card, Space } from "antd";
 import LoadingPage from "@/components/globals/loading-page";
 import UserOption from "./user-option";
+import ModalTamplate from "@/components/tamplates/modal-tamplate";
 
 export default function BlogPage() {
   const [page, setPage] = useState<number>(1);
@@ -44,25 +42,27 @@ export default function BlogPage() {
               </Button>
             </Link>
 
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-4 pt-4 md:grid-cols-2 lg:grid-cols-3">
               {blogsData?.data.map((blog: BlogType) => (
-                <div
+                <Space
                   key={blog.id}
-                  className="group relative rounded border p-4 shadow"
+                  direction="vertical"
+                  className="cursor-pointer"
                 >
-                  <UserOption id={blog.id} className="absolute right-1 top-2" />
-
-                  <h3 className="mb-2 font-semibold">{blog.title}</h3>
-                  <p className="text-gray-600">
-                    {blog.body.substring(0, 100)}...
-                  </p>
-                  <div className="mt-2 text-sm text-gray-500">
-                    User ID: {blog.user_id}
-                  </div>
-                  <div className="mt-2 text-sm text-gray-500">
-                    Blog ID: {blog.id}
-                  </div>
-                </div>
+                  <Card
+                    title={blog.title}
+                    extra={
+                      <ModalTamplate
+                        id={blog.id}
+                        title={blog.title}
+                        body={blog.body}
+                      />
+                    }
+                    className="relative"
+                  >
+                    <p className="line-clamp-4">{blog.body}</p>
+                  </Card>
+                </Space>
               ))}
             </div>
 

@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createBlog, updateBlog } from "@/api/gorest";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { BlogType } from "@/types/blog.type";
@@ -72,45 +71,53 @@ const CreateBlogFrom = ({ type = "CREATE", blog }: CreateBlogFormProps) => {
   };
 
   return (
-    <div className="mx-auto my-8 w-1/2 rounded-lg bg-slate-600/20 p-12 shadow-lg backdrop-blur-md">
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="mx-auto my-4 w-full rounded-lg bg-slate-600/20 p-4 shadow-lg backdrop-blur-md sm:my-6 sm:w-4/5 sm:p-6 md:my-8 md:w-3/4 md:p-8 lg:w-2/3 lg:p-12 xl:w-1/2">
+      <h2 className="mb-4 text-xl font-bold text-gray-100 sm:mb-6 sm:text-2xl">
+        {type === "CREATE" ? "Create New Blog" : "Update Blog"}
+      </h2>
+
+      <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
         {errorMessage && (
-          <div className="rounded-md border border-red-400 bg-red-100 p-4 text-red-700">
+          <div className="rounded-md border border-red-400 bg-red-100 p-3 text-sm text-red-700 sm:p-4">
             {errorMessage}
           </div>
         )}
 
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-200">
+        <div className="space-y-1 sm:space-y-2">
+          <label className="block text-xs font-medium text-gray-200 sm:text-sm">
             Title
-            <TextArea
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              autoSize={{ minRows: 1, maxRows: 4 }}
-              placeholder="Enter your title..."
-            />
           </label>
+          <TextArea
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            autoSize={{ minRows: 1, maxRows: 4 }}
+            placeholder="Enter your title..."
+            className="text-sm sm:text-base"
+          />
         </div>
 
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-200">
+        <div className="space-y-1 sm:space-y-2">
+          <label className="block text-xs font-medium text-gray-200 sm:text-sm">
             Body
-            <TextArea
-              value={body}
-              onChange={(e) => setBody(e.target.value)}
-              placeholder="Enter your description..."
-              autoSize={{ minRows: 3, maxRows: 5 }}
-            />
           </label>
+          <TextArea
+            value={body}
+            onChange={(e) => setBody(e.target.value)}
+            placeholder="Enter your description..."
+            autoSize={{ minRows: 3, maxRows: 5 }}
+            className="text-sm sm:text-base"
+          />
         </div>
 
-        <SubmitButton
-          submitType="submit"
-          type="primary"
-          isLoading={mutation.isPending}
-          onCancel={() => router.back()}
-          className="w-full"
-        />
+        <div className="flex flex-col gap-2 pt-2 sm:flex-row-reverse sm:gap-4 sm:pt-4">
+          <SubmitButton
+            submitType="submit"
+            type="primary"
+            isLoading={mutation.isPending}
+            onCancel={() => router.back()}
+            className="w-full sm:w-auto"
+          />
+        </div>
       </form>
     </div>
   );
